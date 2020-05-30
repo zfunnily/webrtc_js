@@ -1,0 +1,11 @@
+
+version: '3'
+services:
+  nodejs:
+    build: .
+    volumes:
+    - /Users/sources/C++/webrtc/NodeJs/server:/usr/local/src/app/
+    working_dir: /usr/local/src/app/
+    ports:
+    - 7888:8888
+    command: bash -c "/bin/bash && node server.js"
