@@ -4,11 +4,13 @@ var audioSource = document.querySelector('select#audioSource')
 var audioOutput = document.querySelector('select#audioOutput')
 var videoSource = document.querySelector('select#videoSource')
 
-
 if (!navigator.mediaDevices ||
-    !navigator.mediaDevices.enumerateDevices()){
-    console.log('emdiaDevices is not supported!');
+    !navigator.mediaDevices.enumerateDevices() ||
+    !navigator.mediaDevices.getUserMedia()){
+    console.log('enumerateDevices is not supported!');
+    console.log('getUserMedia is not supported!');
 }else {
+    //navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(r => handleError);
     navigator.mediaDevices.enumerateDevices()
         .then(gotDevices)
         .catch(handleError)
@@ -31,10 +33,11 @@ function gotDevices(deviceInfos) {
         }else if (deviceInfo.kind === 'videoinput') {
             videoSource.appendChild(option)
         }
-
     });
 }
 
 function handleError(err) {
      console.log(err.name + ": " + err.message)
 }
+
+
