@@ -2,3 +2,6 @@
 .vscode
 .idea
 .vs
+
+# nodemode
+webserver/https/node_modules

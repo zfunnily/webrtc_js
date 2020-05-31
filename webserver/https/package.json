@@ -1,0 +1,14 @@
+{
+  "name": "website",
+  "version": "0.0.1",
+  "description": "Node.js on Docker",
+  "author": "weiqinl",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "serve-index": "^1.9.1"
+  }
+}
