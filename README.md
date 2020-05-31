@@ -4,29 +4,43 @@
 
 ## 目录结构
 Docker/  运行环境
+
 webserver/http  测试用的http（无用）
+
 webserver/https  web环境/
     http端口 7887
     https端口 8888
+    
 webserver/cert 证书
+
 webserver/public 静态资源目录
 
+## 运行
+依赖
+```
+npm install express serve-index -g
+```
+进入webserver/https/目录
+```
+cd webserver/https && node server.js
+```
+
 ## todo_list
-[x] 设备管理
+[ x ] 设备管理
 
-[x] 捕获音视频
+[ x ] 捕获音视频
 
-[x] 给视频加上特效
+[ x ] 给视频加上特效
 
-[x] 从视频中截取图片
+[ x ] 从视频中截取图片
 
-[] 采集桌面数据
+[ ] 采集桌面数据
 
-[] 录制音视频
+[ ] 录制音视频
 
-[] 信令服务器
+[ ] 信令服务器
 
-[] 端对端传输
+[ ] 端对端传输
 
 
 
