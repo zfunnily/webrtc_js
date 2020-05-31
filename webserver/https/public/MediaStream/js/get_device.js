@@ -12,11 +12,11 @@ if (!navigator.mediaDevices ||
 }else {
     //navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(r => handleError);
     navigator.mediaDevices.enumerateDevices()
-        .then(gotDevices)
+        .then(gotDevices1)
         .catch(handleError)
 }
 
-function gotDevices(deviceInfos) {
+function gotDevices1(deviceInfos) {
     deviceInfos.forEach(function (deviceInfo) {
         console.log(deviceInfo.kind
                     + ": label = " + deviceInfo.label
