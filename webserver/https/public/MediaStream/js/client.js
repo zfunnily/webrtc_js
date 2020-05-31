@@ -37,7 +37,12 @@ if (!navigator.mediaDevices ||
 }
 else{
     var constraints = {
-        video: true,
+        video: {
+            width: 640,
+            height: 480,
+            frameRate: 30,
+            facingMode: 'user'
+        },
         audio: false
     }
     navigator.mediaDevices.getUserMedia(constraints)
