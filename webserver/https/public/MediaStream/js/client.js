@@ -4,6 +4,7 @@ var vidoeplay = document.querySelector('video#player');
 var audioSource = document.querySelector('select#audioSource')
 var audioOutput = document.querySelector('select#audioOutput')
 var videoSource = document.querySelector('select#videoSource')
+var audioplayer = document.querySelector('audio#audioplayer');
 
 //filter
 var filtersSelect = document.querySelector('select#filter');
@@ -33,7 +34,8 @@ function gotDevices(deviceInfos) {
 }
 
 function gotMediaStream(stream) {
-    vidoeplay.srcObject = stream;
+    //vidoeplay.srcObject = stream;
+    audioplayer.srcObject = stream;
     return navigator.mediaDevices.enumerateDevices();
 }
 
@@ -49,7 +51,7 @@ function start() {
     }
     else{
         var deviceId = videoSource.value;
-        var constraints = {
+        /*var constraints = {
             video: {
                 width: 640,
                 height: 480,
@@ -61,7 +63,10 @@ function start() {
                 noiseSuppression: true,
                 echoCancellation: false,
             },
-
+        };*/
+        var constraints = {
+            video: false,
+            audio: true
         }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotMediaStream)
