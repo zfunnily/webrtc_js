@@ -1,10 +1,13 @@
 'use strict'
 
-var vidoeplay = document.querySelector('video#player');
 var audioSource = document.querySelector('select#audioSource')
 var audioOutput = document.querySelector('select#audioOutput')
 var videoSource = document.querySelector('select#videoSource')
+
 var audioplayer = document.querySelector('audio#audioplayer');
+
+var vidoeplay = document.querySelector('video#player');
+var divConstraints = document.querySelector('div#constraints');
 
 //filter
 var filtersSelect = document.querySelector('select#filter');
@@ -34,7 +37,12 @@ function gotDevices(deviceInfos) {
 }
 
 function gotMediaStream(stream) {
-    //vidoeplay.srcObject = stream;
+    vidoeplay.srcObject = stream;
+    var videoTrack = stream.getVideoTracks()[0];
+    var videoContraints = videoTrack.getSettings(); // 获取video所有的约束
+    divConstraints.textContent = JSON.stringify(videoContraints, null, 2);
+
+
     audioplayer.srcObject = stream;
     return navigator.mediaDevices.enumerateDevices();
 }
@@ -65,8 +73,14 @@ function start() {
             },
         };*/
         var constraints = {
-            video: false,
-            audio: true
+            video: {
+            width: 640,
+                height: 480,
+                frameRate: 30,
+                facingMode: 'user',
+                deviceId: deviceId ? deviceId : undefined
+        },
+            audio: false
         }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotMediaStream)
