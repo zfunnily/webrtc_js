@@ -30,24 +30,35 @@ function handleGetMediaError(err) {
     console.log('getUserMedia error:', err);
 }
 
-if (!navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia)
-{
-    console.log("getUserMedia is not support");
-}
-else{
-    var constraints = {
-        video: {
-            width: 640,
-            height: 480,
-            frameRate: 30,
-            facingMode: 'user'
-        },
-        audio: false
+function start() {
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia)
+    {
+        console.log("getUserMedia is not support");
     }
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(gotMediaStream)
-        .then(gotDevices)
-        .catch(handleGetMediaError);
+    else{
+        var deviceId = videoSource.value;
+        var constraints = {
+            video: {
+                width: 640,
+                height: 480,
+                frameRate: 30,
+                facingMode: 'user',
+                deviceId: deviceId ? deviceId : undefined
+            },
+            audio: {
+                noiseSuppression: true,
+                echoCancellation: false,
+            },
+
+        }
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(gotMediaStream)
+            .then(gotDevices)
+            .catch(handleGetMediaError);
+    }
 }
 
+start();
+
+videoSource.onchange = start;
