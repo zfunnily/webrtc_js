@@ -4,7 +4,15 @@ var vidoeplay = document.querySelector('video#player');
 var audioSource = document.querySelector('select#audioSource')
 var audioOutput = document.querySelector('select#audioOutput')
 var videoSource = document.querySelector('select#videoSource')
+
+//filter
 var filtersSelect = document.querySelector('select#filter');
+
+//picture
+var snapshot = document.querySelector('button#snapshot');
+var picture = document.querySelector('canvas#picture');
+picture.width = 320;
+picture.height = 240;
 
 function gotDevices(deviceInfos) {
 
@@ -68,4 +76,13 @@ videoSource.onchange = start;
 
 filtersSelect.onchange = function () {
     vidoeplay.className = filtersSelect.value;
+}
+
+snapshot.onclick = function () {
+    //------拍下来的图片和视频一样加上了特效
+    picture.className = filtersSelect.value;
+    picture.getContext('2d').drawImage(vidoeplay,
+                                        0,0,
+                                        picture.width,
+                                        picture.height)
 }
