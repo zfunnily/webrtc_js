@@ -50,14 +50,14 @@ function gotMediaStream(stream) {
 }
 
 function handleGetMediaError(err) {
-    console.log('getUserMedia error:', err);
+    console.log('getDisplayMedia error:', err);
 }
 
 function start() {
     if (!navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia)
+        !navigator.mediaDevices.getDisplayMedia)
     {
-        console.log("getUserMedia is not support");
+        console.log("getDisplayMedia is not support");
     }
     else{
         var deviceId = videoSource.value;
@@ -84,7 +84,7 @@ function start() {
         },
             audio: false
         }
-        navigator.mediaDevices.getUserMedia(constraints)
+        navigator.mediaDevices.getDisplayMedia(constraints)
             .then(gotMediaStream)
             .then(gotDevices)
             .catch(handleGetMediaError);
