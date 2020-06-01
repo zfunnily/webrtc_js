@@ -18,6 +18,7 @@ var picture = document.querySelector('canvas#picture');
 picture.width = 320;
 picture.height = 240;
 
+
 function gotDevices(deviceInfos) {
 
     videoSource.options.length = 0;
@@ -42,8 +43,9 @@ function gotMediaStream(stream) {
     var videoContraints = videoTrack.getSettings(); // 获取video所有的约束
     divConstraints.textContent = JSON.stringify(videoContraints, null, 2);
 
-
     audioplayer.srcObject = stream;
+
+    window.stream = stream; // 把流放到全局的window中
     return navigator.mediaDevices.enumerateDevices();
 }
 
