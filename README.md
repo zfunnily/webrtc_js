@@ -24,7 +24,10 @@ npm install express serve-index -g
 ```
 cd webserver/https && node server.js
 ```
-
+访问
+```
+https://127.0.0.1:7888/MediaStream/index.html
+```
 ## todo_list
 [ x ] 设备管理
 
@@ -34,9 +37,11 @@ cd webserver/https && node server.js
 
 [ x ] 从视频中截取图片
 
-[ ] 采集桌面数据
+[ x ] 采集桌面数据
 
-[ ] 录制音视频
+[ x ] 录制音视频
+
+[ x ] 聊天室
 
 [ ] 信令服务器
 

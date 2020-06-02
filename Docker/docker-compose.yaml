@@ -7,7 +7,7 @@ services:
     volumes:
     - /Users/sources/C++/webrtc/NodeJs/webserver:/usr/local/src/app/
     ports:
-    - 7887:8887
-    - 7888:8888
+    - 8887:8887
+    - 8888:8888
     working_dir: /usr/local/src/app/https
-    command: /bin/sh -c "npm install express serve-index  && /bin/sh"
+    command: /bin/sh -c "npm install express serve-index socket.io log4js && /bin/sh"
