@@ -69,8 +69,8 @@ io.sockets.on('connection', (socket) => {
     });
 });
 
-httpsServer.listen(8888, function() {
-        console.log('HTTPS Server is running on: http://localhost:%s', 8888);
+httpsServer.listen(8888,'0.0.0.0', function() {
+        console.log('HTTPS Server is running on: http://0.0.0.0:%s', 8888);
     });
 
 

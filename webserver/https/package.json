@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "serve-index": "^1.9.1"
+    "log4js": "^6.3.0",
+    "serve-index": "^1.9.1",
+    "socket.io": "^2.3.0"
   }
 }
