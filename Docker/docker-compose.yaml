@@ -10,4 +10,4 @@ services:
     - 8887:8887
     - 8888:8888
     working_dir: /usr/local/src/app/https
-    command: /bin/sh -c "npm install express serve-index socket.io log4js && /bin/sh"
+    command: /bin/sh -c "npm install express serve-index socket.io log4js && node server.js"
