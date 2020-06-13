@@ -45,6 +45,8 @@ https://127.0.0.1:7888/MediaStream/index.html
 
 - [x] 本地回环
 
+- [x] SDP实战
+
 - [ ] 信令服务器
 
 - [ ] 端对端传输
