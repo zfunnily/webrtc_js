@@ -11,3 +11,13 @@ services:
     - 8888:8888
     working_dir: /usr/local/src/app/https
     command: /bin/sh -c "npm install express serve-index socket.io log4js && node server.js"
+  coturn:
+    image: instrumentisto/coturn
+    tty: true
+    container_name: coturn_test
+    volumes:
+    - ./:/etc/coturn/
+    ports:
+    - 3478:3478
+    - 3478:3478/udp
+    command: /bin/sh -c "turnserver -c /etc/coturn/turnserver.conf"
