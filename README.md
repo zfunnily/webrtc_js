@@ -8,7 +8,7 @@ Docker/  运行环境
 webserver/http  测试用的http（无用）
 
 webserver/https  web环境/
-    http端口 7887
+    http端口 8887
     https端口 8888
     
 webserver/cert 证书
@@ -18,7 +18,7 @@ webserver/public 静态资源目录
 ## 运行
 依赖
 ```
-npm install express serve-index -g
+npm install express serve-index socket.io log4js  -g
 ```
 进入webserver/https/目录
 ```
@@ -26,7 +26,7 @@ cd webserver/https && node server.js
 ```
 访问
 ```
-https://127.0.0.1:7888/MediaStream/index.html
+https://127.0.0.1:8888/MediaStream/index.html
 ```
 ## TODO LIST
 - [x] 设备管理
