@@ -39,10 +39,7 @@ var options = {
     cert: fs.readFileSync('./cert/certificate.pem')
 }
 
-var httpServer = http.createServer(app).listen(8887, function() {
-        console.log('HTTP Server is running on: http://localhost:%s', 8887);
-    });
-
+var httpServer = http.createServer(app);
 var httpsServer = https.createServer(options, app);
 var io = socketIo.listen(httpsServer);
 
@@ -89,6 +86,9 @@ io.sockets.on('connection', (socket) => {
 httpsServer.listen(8888,'0.0.0.0', function() {
         console.log('HTTPS Server is running on: http://0.0.0.0:%s', 8888);
     });
+httpServer.listen(8887,'0.0.0.0', function() {
+    console.log('HTTP Server is running on: http://0.0.0.0:%s', 8887);
+});
 
 
 //可以根据请求判断是http还是https

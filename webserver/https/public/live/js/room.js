@@ -7,6 +7,8 @@ var LEAVED = 'leaved';
 
 var localVideo = document.querySelector('video#localvideo');
 var remoteVideo = document.querySelector('video#remotevideo');
+var offer = document.querySelector('textarea#offer');
+var answer = document.querySelector('textarea#answer');
 
 var btnConn = document.querySelector('button#connserver');
 var btnLeave = document.querySelector('button#leave');
@@ -24,6 +26,7 @@ function handleAnswerError(err) {
 
 function getAnswer(desc) {
     console.log('answer sdp:', desc);
+    answer.value = desc.sdp;
     sendMessage(roomid, desc);
 }
 
@@ -33,6 +36,7 @@ function conn() {
         console.log('reveive join message:', roomid, id);
 
         createPeerConnection();
+        bindTracks();
         btnConn.disabled = true;
         btnLeave.disabled = false;
 
@@ -42,6 +46,7 @@ function conn() {
 
         if (state === JOINED_UNBIND) {
             createPeerConnection();
+            bindTracks();
         }
         state = JOINED_CONN;
         // 媒体协商
@@ -51,8 +56,10 @@ function conn() {
     });
     socket.on('full', (roomid, id) => {
         console.log('reveive full message:', roomid, id);
+        closeLocalMedia();
         state = LEAVED;
         console.log('receive full message:state:', state);
+
         socket.disconnect();
         alert('the room is full!');
 
@@ -77,26 +84,33 @@ function conn() {
     socket.on('message', (roomid, data)=> {
         console.log('reveive client message:', roomid, data);
 
+        if(data === null || data === undefined){
+            console.error('the message is invalid!');
+            return;
+        }
+
         //媒体协商
-        if (data) {
-            if (data.type === 'offer') {
-                pc.setRemoteDescription(new RTCSessionDescription(data));
-                pc.createAnswer()
-                    .then(getAnswer)
-                    .catch(handleAnswerError);
+        if (data.hasOwnProperty('type') && data.type === 'offer') {
+            offer.value = data.sdp;
+            pc.setRemoteDescription(new RTCSessionDescription(data));
 
-            }else if (data.type === 'answer') {
-                pc.setRemoteDescription(new RTCSessionDescription(data));
-            }else if (data.type === 'candidate') {
-                var candidate = new RTCIceCandidate({
-                    sdpMLineIndex: data.label,
-                    candidate: data.candidate
-                });
-                pc.addIceCandidate(data.candidate);
+            pc.createAnswer()
+                .then(getAnswer)
+                .catch(handleAnswerError);
 
-            } else {
-                console.error('the message is invalid!', data);
-            }
+        }else if (data.hasOwnProperty('type') && data.type === 'answer') {
+            answer.value = data.sdp;
+            pc.setRemoteDescription(new RTCSessionDescription(data));
+        }else if (data.hasOwnProperty('type') && data.type === 'candidate') {
+            var candidate = new RTCIceCandidate({
+                sdpMLineIndex: data.label,
+                candidate: data.candidate
+            });
+
+            pc.addIceCandidate(candidate);
+
+        } else {
+            console.error('the message is invalid!', data);
         }
     });
 

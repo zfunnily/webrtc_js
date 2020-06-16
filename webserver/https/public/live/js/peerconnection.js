@@ -6,7 +6,7 @@ function createPeerConnection() {
     if (!pc){
         let pcConfig = {
             'iceServers': [{
-                'url':'turn:192.168.1.13:3478',
+                'urls':'turn:192.168.1.13:3478',
                 'credential':'test',
                 'username':'test'
             }]
@@ -19,7 +19,7 @@ function createPeerConnection() {
                     type: 'candidate',
                     label: e.candidate.sdpMLineIndex,
                     id: e.candidate.sdpMid,
-                    candidate: e.candidate
+                    candidate: e.candidate.candidate
                 });
             }
         }
@@ -38,12 +38,6 @@ function createPeerConnection() {
         };
     }
 
-    // 本地采集的音视频流添加到pc
-    if (localStream) {
-        localStream.getTracks().forEach((track)=>{
-            pc.addTrack(track, localStream);
-        });
-    }
 }
 
 function closePeerConnection() {
@@ -71,6 +65,8 @@ function getRemoteStream(e) {
 
 function getOffer(desc) {
     pc.setLocalDescription(desc);
+    offer.value = desc.sdp;
+
     sendMessage(roomid, desc);
 
 }
@@ -87,5 +83,26 @@ function call() {
                 .then(getOffer)
                 .catch(handleOfferError)
         }
+    }
+}
+
+function bindTracks() {
+    console.log('bind tracks into RTCPeerConnection!');
+
+    if( pc === null || pc === undefined) {
+        console.error('pc is null or undefined!');
+        return;
+    }
+
+    if(localStream === null || localStream === undefined) {
+        console.error('localstream is null or undefined!');
+        return;
+    }
+
+    // 本地采集的音视频流添加到pc
+    if (localStream) {
+        localStream.getTracks().forEach((track)=>{
+            pc.addTrack(track, localStream);
+        });
     }
 }
