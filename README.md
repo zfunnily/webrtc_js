@@ -49,9 +49,14 @@ https://127.0.0.1:8888/MediaStream/index.html
 
 - [x] 搭建ICE
 
-- [ ] 信令服务器
+- [x] 信令服务器
 
-- [ ] 端对端传输
+- [x] 端对端传输
+
+- [x] 码率控制
+
+## 码率控制
+通过`chrome://webrtc-internals/`查看.
 
 ## 搭建ICE
 ### 使用docker搭建
