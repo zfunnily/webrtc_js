@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>WebRTC PeerConnection</title>
+</head>
+<body>
+<div>
+    <div>
+        <button id="connserver"> Connection signal</button>
+        <button id="leave">Leaved</button>
+    </div>
+    <div>
+        <label>BandWidth:</label>
+        <select id="bandwidth" disabled>
+            <option value="unlimited" selected>unlimited</option>
+            <option value="2000">2000</option>
+            <option value="1000">1000</option>
+            <option value="500">500</option>
+            <option value="250">250</option>
+            <option value="125">125</option>
+        </select>
+        kbps
+    </div>
+    <div id="preview">
+        <div style="width:500px; height:auto; float:left;">
+            <h2>Local:</h2>
+            <video id="localvideo" autoplay playsinline></video>
+            <h2> Offer SDP:</h2>
+            <textarea id="offer" cols="40" rows="30"></textarea>
+        </div>
+        <div style="width:500px; height:auto; float:left;">
+            <h2>Remote:</h2>
+            <video id="remotevideo" autoplay playsinline></video>
+            <h2> Answer SDP:</h2>
+            <textarea id="answer" cols="40" rows="30"></textarea>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="js/bandwidth.js"></script>
+</body>
+</html>
