@@ -14,24 +14,47 @@ var btnConn = document.querySelector('button#connserver');
 var btnLeave = document.querySelector('button#leave');
 
 var localStream = null;
+var remoteStream = null;
 
 var socket = null;
 var state = 'init';
 
 var roomid = '111111';
 
-function handleAnswerError(err) {
-    console.error('Faile to create Answer!', err);
+var pc = null;
+
+btnConn.onclick = connSignalServer;
+btnLeave.onclick = leave;
+
+
+
+function connSignalServer() {
+    start();
+    return true;
 }
 
-function getAnswer(desc) {
-    console.log('answer sdp:', desc);
-    answer.value = desc.sdp;
-    sendMessage(roomid, desc);
+function start() {
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+        console.error('the getUserMedia is not supported!');
+        return;
+    }else{
+        var constraints = {
+            video: {
+                width:300,
+                height:300
+            },
+            audio: false
+        }
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(getMediaStream)
+            .catch(handleError)
+    }
 }
 
+/* 信令部分 */
 function conn() {
-    socket = io.connect();
+    socket = io.connect();  // 与服务器连接
     socket.on('joined', (roomid, id) => {
         console.log('reveive join message:', roomid, id);
 
@@ -118,50 +141,21 @@ function conn() {
     return;
 }
 
-function getMediaStream(stream) {
-    localVideo.srcObject = stream
-    localStream = stream
+function call() {
+    if (state === JOINED_CONN) {
+        if (pc) {
+            let options = {
+                offerToReceiveAudio: 0,
+                offerToReceiveVideo: 1
+            };
 
-    conn();
-}
-
-function handleError(err) {
-    console.error('Faile to getMedia Stream!', err);
-}
-
-function connSignalServer() {
-    start();
-    return true;
-}
-
-function start() {
-    if (!navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia) {
-        console.error('the getUserMedia is not supported!');
-        return;
-    }else{
-        var constraints = {
-            video: {
-                width:300,
-                height:300
-            },
-            audio: false
+            pc.createOffer(options)
+                .then(getOffer)
+                .catch(handleOfferError)
         }
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then(getMediaStream)
-            .catch(handleError)
     }
 }
 
-
-function closeLocalMedia() {
-    if (localStream && localStream.getTracks()) {
-        localStream.getTracks().forEach((track) => {
-            track.stop();
-        });
-    }
-    localStream = null;
-}
 
 function leave() {
     if (socket) {
@@ -176,5 +170,118 @@ function leave() {
     btnLeave.disabled = true;
 }
 
-btnConn.onclick = connSignalServer;
-btnLeave.onclick = leave;
+function createPeerConnection() {
+    console.log('create RTCPeerConnection!');
+    if (!pc){
+        let pcConfig = {
+            'iceServers': [{
+                'urls':'turn:192.168.1.13:3478',
+                'credential':'test',
+                'username':'test'
+            }]
+        };
+        pc = new RTCPeerConnection(pcConfig);
+        pc.onicecandidate = (e)=>{
+            if (e.candidate) {
+                console.log('find an new candidate', e.candidate);
+                sendMessage(roomid, {
+                    type: 'candidate',
+                    label: e.candidate.sdpMLineIndex,
+                    id: e.candidate.sdpMid,
+                    candidate: e.candidate.candidate
+                });
+            }
+        }
+        pc.ontrack = getRemoteStream;
+    }
+}
+
+function getMediaStream(stream) {
+    if (localStream) {
+        stream.getAudioTracks().forEach((track) => {
+            localStream.addTrack(track);
+            stream.removeTrack(track);
+        });
+    } else {
+        localStream = stream;
+    }
+    localVideo.srcObject = localStream;
+
+    conn();
+}
+
+function getRemoteStream(e) {
+    remoteStream = e.streams[0];
+    remoteVideo.srcObject = e.streams[0];
+}
+
+function closePeerConnection() {
+    console.log('close RTCPeerConnection!');
+    if (pc) {
+        pc.close();
+        pc = null;
+    }
+}
+
+function closeLocalMedia() {
+    if (localStream && localStream.getTracks()) {
+        localStream.getTracks().forEach((track) => {
+            track.stop();
+        });
+    }
+    localStream = null;
+}
+
+function handleError(err) {
+    console.error('Faile to getMedia Stream!', err);
+}
+
+function handleAnswerError(err) {
+    console.error('Faile to create Answer!', err);
+}
+
+function handleOfferError(err) {
+    console.error('Faile to create Offer!', err);
+}
+
+function sendMessage(roomid, data) {
+    //console.log('send p2p message:', roomid, data)
+    if (socket) {
+        socket.emit('message', roomid, data);
+    }
+}
+
+function bindTracks() {
+    console.log('bind tracks into RTCPeerConnection!');
+
+    if( pc === null || pc === undefined) {
+        console.error('pc is null or undefined!');
+        return;
+    }
+
+    if(localStream === null || localStream === undefined) {
+        console.error('localstream is null or undefined!');
+        return;
+    }
+
+    // 本地采集的音视频流添加到pc
+    if (localStream) {
+        localStream.getTracks().forEach((track)=>{
+            pc.addTrack(track, localStream);
+        });
+    }
+}
+
+function getAnswer(desc) {
+    pc.setLocalDescription(desc);
+    console.log('answer sdp:', desc);
+    answer.value = desc.sdp;
+    sendMessage(roomid, desc);
+}
+
+function getOffer(desc) {
+    pc.setLocalDescription(desc);
+    offer.value = desc.sdp;
+
+    sendMessage(roomid, desc);
+}
