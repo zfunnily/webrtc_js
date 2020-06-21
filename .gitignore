@@ -4,7 +4,7 @@
 .vs
 
 # nodemode
-webserver/https/node_modules
+node_modules
 
 # log
 *.log

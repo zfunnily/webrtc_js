@@ -29,31 +29,33 @@ cd webserver/https && node server.js
 https://127.0.0.1:8888/MediaStream/index.html
 ```
 ## TODO LIST
-- [x] 设备管理 webser
+- [x] 设备管理 webserver/public/MediaStream/index.html
 
-- [x] 捕获音视频
+- [x] 捕获音视频 webserver/public/MediaStream/getdevice.html
 
-- [x] 给视频加上特效
+- [x] 给视频加上特效 webserver/public/MediaStream/index.html
 
-- [x] 从视频中截取图片
+- [x] 从视频中截取图片 webserver/public/MediaStream/index.html
 
-- [x] 采集桌面数据
+- [x] 采集桌面数据 webserver/public/MediaStream/index.html
 
-- [x] 录制音视频
+- [x] 录制音视频 webserver/public/MediaStream/index.html
 
-- [x] 聊天室
+- [x] 聊天室 webserver/public/chatroom/index.html
 
-- [x] 本地回环
+- [x] 本地回环 webserver/public/peer/index.html
 
-- [x] SDP实战
+- [x] SDP实战 webserver/public/testCreateOffer/index.html
 
-- [x] 搭建ICE
+- [x] 搭建ICE Docker/docker-compose.yaml
 
-- [x] 信令服务器
+- [x] 信令服务器 webserver/public/server.js
 
-- [x] 端对端传输
+- [x] 1v1端对端传输 webserver/public/live/room.html
 
-- [x] 码率控制
+- [x] 码率控制 webserver/public/bandwidth/index.html
+
+- [ ]  webrtc统计信息
 
 ## 码率控制
 通过`chrome://webrtc-internals/`查看.
