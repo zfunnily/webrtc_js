@@ -5,11 +5,11 @@ services:
     image: node:latest
     tty: true
     volumes:
-    - /Users/sources/C++/webrtc/NodeJs/webserver:/usr/local/src/app/
+    - /Users/sources/C++/webrtc/NodeJs/webserver/:/usr/local/src/app/
     ports:
     - 8887:8887
     - 8888:8888
-    working_dir: /usr/local/src/app/https
+    working_dir: /usr/local/src/app/
     command: /bin/sh -c "npm install express serve-index socket.io log4js && node server.js"
   coturn:
     image: instrumentisto/coturn

@@ -29,7 +29,7 @@ cd webserver/https && node server.js
 https://127.0.0.1:8888/MediaStream/index.html
 ```
 ## TODO LIST
-- [x] 设备管理
+- [x] 设备管理 webser
 
 - [x] 捕获音视频
 
