@@ -5,29 +5,31 @@
 ## 目录结构
 Docker/  运行环境
 
-webserver/http  测试用的http（无用）
-
-webserver/https  web环境/
-    http端口 8887
-    https端口 8888
-    
-webserver/cert 证书
-
-webserver/public 静态资源目录
+webserver/public 静态资源目录和功能实现
 
 ## 运行
+### Docker运行(推荐)
+```
+cd Docker/ && docker-compose up 
+```
+进入浏览器运行访问
+```
+https://127.0.0.1:8888/MediaStream/index.html
+```
+### 安装nodejs环境
 依赖
 ```
 npm install express serve-index socket.io log4js  -g
 ```
-进入webserver/https/目录
+进入webserver/目录
 ```
-cd webserver/https && node server.js
+cd webserver/ && node server.js
 ```
 访问
 ```
 https://127.0.0.1:8888/MediaStream/index.html
 ```
+
 ## TODO LIST
 - [x] 设备管理 webserver/public/MediaStream/index.html
 
